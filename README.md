@@ -57,3 +57,23 @@ Ctyri liniove grafy ukazujici vyvoj vypujcek v prubehu jednotlivych let a k datu
 Z vrchniho grafu muzeme vycist, ze stanice ze ktere je provedeno nejvice vypujcek ma ID 265 a jmeno Meadows East - celkovy pocet vypujcek na teto stanici presahl 17000, konkretne 17390. Nejmene vyuzite pocatecni stanice jsou 1857 City Chambers Launch Station a take 1740 Cycling Scotland Conference. U konecnych stanice je nejvice vyuzivana stanice ID 1728 Portobello-Kings Road, kdy pocet presahl 16000 a nejmene vyuzivane 1740 Cycling Scotland Conference a take 242 Virtual Depot.
 
 Pri standartni descriptivni statistice zjistime, ze pocet start_stations podle jejich unikatniho Id je 198 a end_stations je 199.  U pocatku je nejmenis pocet stanice jedno pouziti uz konecne stanice 2.
+
+## Bikes and Weather - souvislost a vliv pocasi na vypujcky
+Jak uz bylo vyse uvedeno, dataset pro weather jsem musela upravit a ziskat odpovidajici hodnoty a spravny datovy typ. Abych mohla provadet nejakou analyzu, bylo potreba tyto dva datasety, tedy bike a weather spojit dohromady. Protoze casove udaje v datasetu bike neodpovidaly casovym udajum datasetu weather, pripravila jsem si oba datasety casovym ohranicenim - to znamena tak, aby datum v datasetu bike odpovidalo datu v datasetu weather. To znamena ze vypujcky provedene v konkretnim datu probihaly pri pocasi ve stejnem datu. U datasetu weather jsem vzala prumer pro vsechny hodnoty - tedy prumernou teplotu, jaka byla prumerna rychlost vetru ci prumerne mnozstvi srazek. Dataset bike jsem upravila tak, abych mela datum, pocet vypujcek, prumernou dobu trvani a prumernou vzdalenost. Po spojeni techto dvou dataframe vznikla nova dataframe, ktera obsahovala relevantni udaje pro nasledne vypocty.
+
+Pro zjisteni zavislosti promnenych navzajem jsem vyuzila moznosti metody corr() na dataframe. Diky teto metode me vznikla dataframe s hodnotami,ktere rikaji, jaka je tesnost zavisle promenne pri zmene nezavisle promenne. Nize je uvedeny graf i s hodnotamy korelace.
+
+![Correlation bike-share and weather](https://user-images.githubusercontent.com/72987557/158074779-8f00636b-bd23-4695-a157-3bf16e4aee49.png)
+
+Nize uvedene grafy linearni regrese nam ukazuji zavislost mezi velicinamy. V kazdem grafu je znazornena jako velicina x jedna nase promenna napr.teplota a jako velicina y druha promena napr.distance. V nasem pripade muzeme rict, ze pravdepodobne na teplote je zavisla distance a ne naopak. Stejne tak to vypovida graf, ktery se tyka doby trvani vypujcky, ze ktereho muzeme vcelku zato rict, ze tam mame primou zavislost - hodnoty se vyskytuji podel primky. Kdezto u poctu vypujcek jsou hodnoty vice rozsete, a tak lze konstatovat, ze pocet vypujcek neni uplne zavisly na tom, jake je pocasi.
+
+![Relationship between bikeshare and weather - part1](https://user-images.githubusercontent.com/72987557/158074811-bfbfac11-1bf0-4009-9121-e439d660ea66.png)
+
+Jako posledni je graf, ktery znazornuje souvislost mezi vypujckami, vlhkosti vzduchu a oblacnosti. Hlavni vlivy pocasi byly zobrazeny pomoci linearni regrese v jinem grafu, pro prehlednost jsem to trochu rozdelila.
+
+![Relationship betwen bikeshare and weather - part2](https://user-images.githubusercontent.com/72987557/158074895-3ec84598-cc53-4979-b8ad-3339b8fdb227.png)
+
+## Zaver
+Co rict na zaver. Z pruzkumu, vypoctu a zobrazeni datasetu vyplyva, ze lide si pujcuji kola vice o vikendu a to nejvice v sobotu, zaroven se lisi doba vypujcek mezi vikendem a pracovnim dnem. Mame zjisteny stanice, ze kterych lide kola vypujcovali nejvice ale take nejmene. Pocasi urcity vliv ma, ale tento vliv neni uplne zasadni. Nektere stanice jsou vyuzivane tak malo, ze by bylo mozne je zrusit. Take vime ve kterem roce bylo provedeno nejvice vypujcek v jeden den. Vcelku jasny vystup je pro vypujcky v ruznych rocnich obdobich - celkem logicky nejvice v lete, nasledne na jare a pak podzim a zima. Stejne tak je to jasne v pripade mesicu v roce. Je zajimave ze napriklad delka trvani vypujcky je prozmenu prumerne vyssi na jare nez v lete, ale samozrejmen o vikendu jsou vypujcky delsi. Nejvice frekventovane vypujcky maji dobu trvani do 20 minut a frekvence vzdalenosti se pohybuje do 1.5 km.
+
+
